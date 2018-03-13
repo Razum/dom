@@ -13,7 +13,6 @@ class App extends Component {
   componentDidMount() {
     worker.addEventListener('message', (event) => {
       console.log('FROM WORKER:', event.data);
-
       this.setState(currState => ({
         ...currState,
         data: {

@@ -1,60 +1,63 @@
-/* eslint-disable */
-export default function MyWorker(args) {
+export default function MyWorker() {
   const ws = new WebSocket('ws://front-test-1.herokuapp.com/ob?key=210c01fe-1962-40f8-8730-f8387c321090&rate=2000');
+  const DELAY = 1000;
+  const TIMEOUT_PING = 600000; // 10 min 540000
   let offers = {};
 
-  const sendResults = throttle(() => {
+  const sendResults = getThrottled(() => {
     postMessage(offers);
-    offers = {}
-  }, 2000);
+    offers = {};
+  });
 
 
   ws.onmessage = (event) => {
-    const arr = event.data.replace(/\]\[/g, '],[');
-    const data = JSON.parse(`{"items": [${arr}]}`);
-    const hash = data.items.reduce((hash, itm) => {
+    const data = parseData(event.data);
+    Object.assign(offers, data);
+    sendResults();
+  };
+
+  keepAlive();
+
+  function parseData(data) {
+    const arr = data.replace(/\]\[/g, '],[');
+    const { items } = JSON.parse(`{"items": [${arr}]}`);
+    // ignore snapshot with static values
+    if (items.length > 1) {
+      return {};
+    }
+    return items.reduce((hash, itm) => {
       hash[itm[0]] = itm[1];
       return hash;
     }, {});
+  }
 
-    sendResults(Object.assign(offers, hash))
-  };
+  function getThrottled(func) {
+    return throttle(func, DELAY);
+  }
 
-  let onmessage = e => {};
+  function keepAlive() {
+    if (ws.readyState === ws.OPEN) {
+      ws.send('ping');
+    }
+    setTimeout(keepAlive, TIMEOUT_PING);
+  }
 
+  // throttle alternative to lodash.throttle
+  function throttle(callback, wait, context = this) {
+    let timeout = null;
+    let callbackArgs = null;
 
-
-
-  function throttle(func, wait, options) {
-    var context, args, result;
-    var timeout = null;
-    var previous = 0;
-    if (!options) options = {};
-    var later = function() {
-      previous = options.leading === false ? 0 : Date.now();
+    const later = () => {
+      callback.apply(context, callbackArgs);
       timeout = null;
-      result = func.apply(context, args);
-      if (!timeout) context = args = null;
     };
-    return function() {
-      var now = Date.now();
-      if (!previous && options.leading === false) previous = now;
-      var remaining = wait - (now - previous);
-      context = this;
-      args = arguments;
-      if (remaining <= 0 || remaining > wait) {
-        if (timeout) {
-          clearTimeout(timeout);
-          timeout = null;
-        }
-        previous = now;
-        result = func.apply(context, args);
-        if (!timeout) context = args = null;
-      } else if (!timeout && options.trailing !== false) {
-        timeout = setTimeout(later, remaining);
+
+    return (...args) => {
+      if (!timeout) {
+        callbackArgs = args;
+        timeout = setTimeout(later, wait);
       }
-      return result;
     };
-  };
+  }
 }
 

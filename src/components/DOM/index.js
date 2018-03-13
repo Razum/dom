@@ -1,26 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Panel from '../Panel';
+import style from './style.scss';
 
+const SLICE = 20;
 const comparator = (a, b) => b.price - a.price;
+const reverseComparator = (a, b) => a.price - b.price;
 
 const DOM = ({ data }) => {
   const items = Object.keys(data).reduce((hash, key) => {
-    if (data[key] <= 0) {
-      hash.ask.push({ price: parseFloat(key, 10), amount: parseFloat(data[key], 10) });
-    } else {
-      hash.bid.push({ price: parseFloat(key, 10), amount: parseFloat(data[key], 10) });
+    if (data[key] < 0) {
+      hash.ask.push({ price: parseFloat(key), amount: Math.abs(parseFloat(data[key])) });
+    }
+    if (data[key] > 0) {
+      hash.bid.push({ price: parseFloat(key), amount: parseFloat(data[key]) });
     }
     return hash;
   }, { bid: [], ask: [] });
+  const bid = items.bid.sort(comparator).slice(0, SLICE);
+  const ask = items.ask.sort(reverseComparator).slice(0, SLICE);
   return (
-    <div className="container">
+    <div className={`container ${style.dom}`}>
       <div className="row">
-        <div className="w-50">
-          <Panel type="bid" offers={items.bid.sort(comparator).slice(0, 21)} />
+        <div className="col w-50">
+          <Panel type="bid" offers={bid} />
         </div>
-        <div className="w-50">
-          <Panel type="ask" offers={items.ask.sort(comparator).slice(0, 21)} />
+        <div className="col w-50">
+          <Panel type="ask" offers={ask} />
         </div>
       </div>
     </div>
