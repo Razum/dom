@@ -1,0 +1,16 @@
+/**
+ * Add a mobile-first responsive breakpoint
+ * @param  {string} $width
+ * @param  {string} $orientation `portrait` or `landscape`
+ */
+@mixin breakpoint($breakpoint: md, $orientation: false) {
+  @if ($orientation) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) and (orientation : $orientation) {
+      @content;
+    }
+  } @else {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+}

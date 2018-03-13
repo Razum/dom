@@ -1,0 +1,17 @@
+:global {
+  @import "./vendor/normalize.css";
+
+  // Base
+  @import "./base/layout";
+  @import "./base/typography";
+
+  // Utils
+  @import './utils/colors';
+  @import './utils/display';
+  @import './utils/typography';
+  @import './utils/hide';
+  @import './utils/layout';
+  @import './utils/ratio';
+  @import './utils/grid';
+  @import './utils/spacing';
+}

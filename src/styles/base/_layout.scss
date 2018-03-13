@@ -1,0 +1,31 @@
+html {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+
+/**
+ * Allow breakpoints to be accessed in JS
+ * https://goo.gl/fIuMPF
+ */
+body:after {
+  content: '';
+  display: none;
+
+  @each $key, $value in $breakpoints {
+    @include breakpoint($key) {
+      content: '#{$key}';
+    }
+  }
+}

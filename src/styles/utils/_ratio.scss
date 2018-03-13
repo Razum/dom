@@ -1,0 +1,9 @@
+// Intrinsic ratio classes
+$ratios: ((16, 9), (1, 1));
+
+@each $ratio in $ratios {
+
+  .ratio-#{nth($ratio, 1)}x#{nth($ratio, 2)} {
+    @include ratio(nth($ratio, 2), nth($ratio, 1));
+  }
+}

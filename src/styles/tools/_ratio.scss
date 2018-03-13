@@ -1,0 +1,7 @@
+@mixin ratio($x, $y) {
+  &:before {
+    content: "";
+    display: block;
+    padding-bottom: percentage($x / $y);
+  }
+}

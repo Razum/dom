@@ -1,0 +1,14 @@
+// http://v4-alpha.getbootstrap.com/layout/responsive-utilities/
+@each $breakpoint, $val in $breakpoints {
+  @media (max-width: map-get($breakpoints, #{$breakpoint})) {
+    .hide-#{$breakpoint}-down {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: map-get($breakpoints, #{$breakpoint})) {
+    .hide-#{$breakpoint}-up {
+      display: none !important;
+    }
+  }
+}

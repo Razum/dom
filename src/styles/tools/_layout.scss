@@ -1,0 +1,21 @@
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: " ";
+    display: table
+  }
+
+  &:after {
+    clear: both
+  }
+}
+
+/**
+ * Flex shorthand
+ */
+@mixin flex ($direction: row, $justify: flex-start, $align: stretch) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}

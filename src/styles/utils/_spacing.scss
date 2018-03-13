@@ -1,0 +1,68 @@
+/**
+ * Spacing utils
+ * @example
+ * <div class="mb" />
+ * <div class="mb1" />
+ * <div class="pl6" />
+ */
+$spacing-properties: margin padding;
+$spacing-directions: top right bottom left;
+
+$spacing-values: (
+        0: 0,
+        1: 0.25rem,
+        2: 0.5rem,
+        3: 1rem,
+        4: 2rem,
+        5: 4rem,
+        6: 8rem,
+        7: 16rem
+);
+
+@each $property in $spacing-properties {
+
+  @each $step, $value in $spacing-values {
+    .#{unquote(str_slice($property, 1, 1))}#{$step} {
+      #{$property}:  map-get($spacing-values, $step) !important;
+    }
+
+    .#{unquote(str_slice($property, 1, 1))}#{y}#{$step} {
+      #{$property}-top:  map-get($spacing-values, $step) !important;
+      #{$property}-bottom:  map-get($spacing-values, $step) !important;
+    }
+
+    .#{unquote(str_slice($property, 1, 1))}#{x}#{$step} {
+      #{$property}-left:  map-get($spacing-values, $step) !important;
+      #{$property}-right:  map-get($spacing-values, $step) !important;
+    }
+  }
+
+  @each $direction in $spacing-directions {
+
+    @each $step, $value in $spacing-values {
+
+      $className: #{unquote(str_slice($property, 1, 1))}#{str_slice($direction, 1, 1)}#{if($step == "base", "", $step)};
+
+      .#{$className} {
+        #{$property}-#{$direction}: map-get($spacing-values, $step) !important;
+      }
+
+    }
+  }
+}
+
+.mla {
+  margin-left: auto !important;
+}
+
+.mra {
+  margin-right: auto !important;
+}
+
+.mta {
+  margin-top: auto !important;
+}
+
+.mba {
+  margin-bottom: auto !important;
+}

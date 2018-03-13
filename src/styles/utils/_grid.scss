@@ -1,0 +1,49 @@
+$column_padding: 0.75em;
+$col-size: 10 20 25 33 50 66 75 80 90 100;
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: $max-width;
+  padding-left: $column_padding;
+  padding-right: $column_padding;
+  width: 100%;
+}
+
+.row {
+  @include flex;
+  flex-wrap: wrap;
+  margin-left: -#{$column_padding};
+  margin-right: -#{$column_padding};
+
+  &--center {
+    @include flex(row, center, center);
+  }
+}
+
+.col {
+  padding-left: $column_padding;
+  padding-right: $column_padding;
+}
+
+@each $size in $col-size {
+  .w-#{$size} {
+    width: percentage($size / 100);
+  }
+}
+
+
+@each $breakpoint, $value in $breakpoints {
+
+  @include breakpoint($breakpoint) {
+    @each $size in $col-size {
+      .w-#{$breakpoint}-#{$size} {
+        width: percentage($size / 100);
+      }
+
+      .w-#{$breakpoint}-offset-#{$size} {
+        margin-left: percentage($size / 100);
+      }
+    }
+  }
+}
