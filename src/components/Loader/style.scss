@@ -1,0 +1,31 @@
+.bg {
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -5rem;
+  margin-top: -5rem;
+  z-index: 1;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  border: 6px solid darkorange;
+  border-bottom-color: transparent;
+  border-top-color: transparent;
+  animation: round-round 1s infinite;
+}
+
+
+
+@keyframes round-round {
+  from {transform: rotate(0deg)}
+  to {transform: rotate(360deg)}
+}

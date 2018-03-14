@@ -1,7 +1,7 @@
 export default function MyWorker() {
   const ws = new WebSocket('ws://front-test-1.herokuapp.com/ob?key=210c01fe-1962-40f8-8730-f8387c321090&rate=2000');
   const DELAY = 1000;
-  const TIMEOUT_PING = 600000; // 10 min 540000
+  const TIMEOUT_PING = 600000; // 10 min
   let offers = {};
 
   const sendResults = getThrottled(() => {
