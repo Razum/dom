@@ -1,6 +1,8 @@
 http://dom.razumieienko.com/
 
-#####To Start:
-`npm install`
+##### To Start:
 
-`npm start`
+```sh
+npm install
+npm start
+```
